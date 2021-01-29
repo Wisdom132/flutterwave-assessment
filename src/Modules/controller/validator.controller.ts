@@ -15,12 +15,33 @@ class ValidatorController implements Controller {
 
   private ruleValidator = async (req: Request, res: Response) => {
     const { rule, data } = req.body;
-    const { field, condition, condition_value } = rule;
-    const field_value = getProp(data, field);
-
     //case 1  <line 85>
     if (!rule && !data) {
+      res.status(400).json({
+        message: "rule and data is required.",
+        status: "error",
+        data: null,
+      });
     }
+
+    if (!rule) {
+      res.status(400).json({
+        message: "rule is required.",
+        status: "error",
+        data: null,
+      });
+    }
+
+    if (!data) {
+      res.status(400).json({
+        message: "data is required.",
+        status: "error",
+        data: null,
+      });
+    }
+
+    const { field, condition, condition_value } = rule;
+    const field_value = getProp(data, field);
 
     //<line 120>
     if (!field_value) {
@@ -30,6 +51,7 @@ class ValidatorController implements Controller {
         data: null,
       });
     }
+
     // Check if Field value & Condition Value are of the same type here <line 98>
     if (typeof field_value !== typeof condition_value) {
       return res.status(400).json({
@@ -39,33 +61,33 @@ class ValidatorController implements Controller {
       });
     }
 
-    let notError;
+    let validated;
     try {
       switch (condition) {
         case "eq":
-          notError = field_value === condition_value;
+          validated = field_value === condition_value;
           break;
         case "neq":
-          notError = field_value !== condition_value;
+          validated = field_value !== condition_value;
           break;
         case "gt":
-          notError = field_value > condition_value;
+          validated = field_value > condition_value;
           break;
         case "gte":
-          notError = field_value >= condition_value;
+          validated = field_value >= condition_value;
           break;
         case "contains":
-          notError = field_value.includes(condition_value);
+          validated = field_value.includes(condition_value);
           break;
         default:
-          notError = false;
+          validated = false;
           break;
       }
     } catch (error) {
       // Handle Errors
     }
 
-    if (notError) {
+    if (validated) {
       return res.status(200).json({
         message: `field ${field} successfully validated.`,
         status: "success",
@@ -110,8 +132,8 @@ class ValidatorController implements Controller {
  * @returns {*|undefined} The value of the objects property or undefined if the property doesn't exist
  */
 function getProp(obj: any, prop: string) {
-  if (typeof obj !== "object") throw "getProp: obj is not an object";
-  if (typeof prop !== "string") throw "getProp: prop is not a string";
+  // if (typeof obj !== "object") throw "getProp: obj is not an object";
+  // if (typeof prop !== "string") throw "getProp: prop is not a string";
   // Replace [] notation with dot notation
   prop = prop.replace(/\[["'`](.*)["'`]\]/g, ".$1");
   return prop.split(".").reduce(function (prev, curr) {
