@@ -1,6 +1,8 @@
 import User from "../interfaces/user.interface";
 import { Router, Request, Response, NextFunction } from "express";
 import Controller from "../interfaces/controller.interface";
+import user from "../data/user.json";
+
 import fs from "fs";
 import path from "path";
 
