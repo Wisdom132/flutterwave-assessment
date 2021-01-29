@@ -1,6 +1,8 @@
 import * as dotenv from "dotenv";
 import express, { Application, Request, Response, NextFunction } from "express";
 import Controller from "./Modules/interfaces/controller.interface";
+import errorMiddleware from "./Modules/middleware/error.middleware";
+
 import cors from "cors";
 import helmet from "helmet";
 
@@ -12,6 +14,7 @@ class App {
 
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
+    this.initializeErrorHandling();
   }
 
   public listen() {
@@ -29,6 +32,9 @@ class App {
     this.app.use(cors());
     this.app.use(express.json());
     dotenv.config();
+  }
+  private initializeErrorHandling() {
+    this.app.use(errorMiddleware);
   }
 
   private initializeControllers(controllers: Controller[]) {
