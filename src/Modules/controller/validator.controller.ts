@@ -39,7 +39,6 @@ class ValidatorController implements Controller {
         data: null,
       });
     }
-
     const { field, condition, condition_value } = rule;
     const field_value = getProp(data, field);
 
@@ -85,6 +84,7 @@ class ValidatorController implements Controller {
       }
     } catch (error) {
       // Handle Errors
+      console.log(error);
     }
 
     if (validated) {
