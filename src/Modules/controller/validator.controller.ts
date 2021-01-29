@@ -65,7 +65,6 @@ class ValidatorController implements Controller {
       // Handle Errors
     }
 
-    let response;
     if (notError) {
       return res.status(200).json({
         message: `field ${field} successfully validated.`,

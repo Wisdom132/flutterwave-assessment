@@ -4,9 +4,11 @@
   "description": "Flutterwave backend assessment",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/",
+    "start": "node dist/server.js",
     "dev":"nodemon src/server.ts",
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "watch-ts": "tsc -w",
+    "deploy": "git add . && git commit -m Heroku && git push heroku master"
   },
   "author": "wisdom ekpot <wisdomekpot@gmail.com>",
   "license": "ISC",
